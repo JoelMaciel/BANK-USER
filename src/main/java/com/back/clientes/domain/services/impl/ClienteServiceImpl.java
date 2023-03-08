@@ -1,6 +1,6 @@
 package com.back.clientes.domain.services.impl;
 
-import com.back.clientes.api.converter.ClienteToDto;
+import com.back.clientes.api.model.converter.ClienteToDto;
 import com.back.clientes.api.model.ClienteDto;
 import com.back.clientes.domain.exception.ClienteNaoEncontrado;
 import com.back.clientes.domain.exception.EntidadeEmUsoException;
@@ -50,9 +50,27 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    @Transactional
+    @Override
+    public Cliente salvar(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public boolean existeClienteCpf(String cpf) {
+        return clienteRepository.existsByCpf(cpf);
+    }
+
+    @Override
+    public boolean existeClienteEmail(String email) {
+        return clienteRepository.existsByEmail(email);
+    }
+
     @Override
     public Cliente buscarOuFalhar(UUID clienteId) {
         return  clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ClienteNaoEncontrado(clienteId));
     }
+
+
 }

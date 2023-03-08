@@ -2,6 +2,7 @@ package com.back.clientes.api.model.input;
 
 import javax.validation.constraints.NotBlank;
 
+
 public class EnderecoInput {
 
     @NotBlank

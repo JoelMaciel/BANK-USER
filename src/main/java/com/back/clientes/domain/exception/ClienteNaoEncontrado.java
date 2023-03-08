@@ -14,8 +14,8 @@ public class ClienteNaoEncontrado extends EntidadeNaoEncontradaException {
         super(mensagem);
     }
 
-    public ClienteNaoEncontrado(UUID cidadeId) {
-        this( String.format("Não existe um cadastro de cliente com código %s", cidadeId));
+    public ClienteNaoEncontrado(UUID clienteId) {
+        this( String.format("Não existe um cadastro de cliente com código %s", clienteId));
     }
 
 }

@@ -1,5 +1,5 @@
 create table cliente (
-	cliente_id varchar(36) not null,
+	cliente_id char(36) not null,
 	nome varchar(80) not null,
 	cpf varchar(11) unique not null,
 	email varchar(35) unique not null,

@@ -1,6 +1,6 @@
 package com.back.clientes.api.controller;
 
-import com.back.clientes.api.converter.ClienteToDto;
+import com.back.clientes.api.model.converter.ClienteToDto;
 import com.back.clientes.api.model.ClienteDto;
 import com.back.clientes.domain.model.Cliente;
 import com.back.clientes.domain.services.ClienteService;

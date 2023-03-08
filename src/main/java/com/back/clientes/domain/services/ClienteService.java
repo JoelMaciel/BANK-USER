@@ -12,4 +12,10 @@ public interface ClienteService {
     public void excluir(UUID clienteId);
 
     public Cliente buscarOuFalhar(UUID clienteId) ;
+
+    Cliente salvar(Cliente cliente);
+
+    boolean existeClienteCpf(String cpf);
+
+    boolean existeClienteEmail(String email);
 }

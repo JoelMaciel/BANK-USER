@@ -1,4 +1,4 @@
-package com.back.clientes.api.converter;
+package com.back.clientes.api.model.converter;
 
 import com.back.clientes.api.model.ClienteDto;
 import com.back.clientes.domain.model.Cliente;
