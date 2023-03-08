@@ -19,6 +19,7 @@ public class ClienteDto {
     private UUID clienteId;
     private String nome;
     private String cpf;
+    private String email;
     private String contato;
     private OffsetDateTime dataCriacao;
     private OffsetDateTime dataAtualizacao;

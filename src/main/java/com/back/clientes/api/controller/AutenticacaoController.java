@@ -5,6 +5,7 @@ import com.back.clientes.api.model.converter.ClienteToDto;
 import com.back.clientes.api.model.ClienteDto;
 import com.back.clientes.api.model.input.ClienteInput;
 import com.back.clientes.domain.services.ClienteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
