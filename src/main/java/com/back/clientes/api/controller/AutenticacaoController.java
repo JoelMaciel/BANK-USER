@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.OffsetDateTime;
 
 @RestController
@@ -28,7 +29,7 @@ public class AutenticacaoController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> registrarCliente(@RequestBody ClienteInput clienteInput) {
+    public ResponseEntity<Object> registrarCliente(@RequestBody @Valid ClienteInput clienteInput) {
 
         if (clienteService.existeClienteCpf(clienteInput.getCpf())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)

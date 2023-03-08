@@ -1,5 +1,6 @@
 package com.back.clientes.api.model;
 
+import com.back.clientes.api.model.input.EnderecoInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,22 +15,14 @@ import java.util.UUID;
 @Setter
 public class ClienteDto {
 
-    @NotNull
+
     private UUID clienteId;
-
-    @NotBlank
     private String nome;
-
-    @NotBlank
     private String cpf;
-
-    @NotBlank
     private String contato;
-
-    @NotNull
     private OffsetDateTime dataCriacao;
-
     private OffsetDateTime dataAtualizacao;
+    private EnderecoInput endereco;
 
 
 }
