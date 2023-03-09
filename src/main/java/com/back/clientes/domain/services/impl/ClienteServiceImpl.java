@@ -10,6 +10,9 @@ import com.back.clientes.domain.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +67,12 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public boolean existeClienteEmail(String email) {
         return clienteRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Page<ClienteDto> findAll(Specification<Cliente> spec, Pageable pageable) {
+        Page<Cliente> clientesPage = clienteRepository.findAll(spec,pageable);
+        return clienteToDto.convertToPageDto(clientesPage,pageable);
     }
 
     @Override

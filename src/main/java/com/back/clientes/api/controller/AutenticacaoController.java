@@ -51,7 +51,4 @@ public class AutenticacaoController {
        return  ResponseEntity.status(HttpStatus.CREATED).body(clienteDto);
 
     }
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.back.clientes.api.model.input;
 
-import com.back.clientes.api.model.EnderecoDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -29,6 +28,7 @@ public class ClienteInput {
     private String email;
 
     @NotBlank
+    @Size(min = 8, max = 30)
     private String senha;
 
     @NotBlank

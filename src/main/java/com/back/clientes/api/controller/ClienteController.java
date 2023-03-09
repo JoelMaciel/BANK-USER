@@ -1,24 +1,26 @@
 package com.back.clientes.api.controller;
 
+import com.back.clientes.api.model.ClienteDto;
 import com.back.clientes.api.model.converter.ClienteInputToDomain;
 import com.back.clientes.api.model.converter.ClienteInputUpdatePasswordToDomain;
 import com.back.clientes.api.model.converter.ClienteInputUpdateToDomain;
 import com.back.clientes.api.model.converter.ClienteToDto;
-import com.back.clientes.api.model.ClienteDto;
-import com.back.clientes.api.model.input.ClienteInput;
 import com.back.clientes.api.model.input.ClienteInputUpdate;
 import com.back.clientes.api.model.input.ClienteInputUpdatePassword;
 import com.back.clientes.domain.model.Cliente;
 import com.back.clientes.domain.services.ClienteService;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.back.clientes.infrastructure.specification.SpecificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -43,8 +45,9 @@ public class ClienteController {
 
 
     @GetMapping
-    public List<ClienteDto> listar() {
-        return clienteService.listar();
+    public Page<ClienteDto> listar(SpecificationTemplate.ClienteSpec spec,
+        @PageableDefault(page = 0, size = 10, sort = "clienteId", direction = Sort.Direction.ASC) Pageable pageable) {
+        return clienteService.findAll(spec, pageable);
     }
 
     @GetMapping("/{clienteId}")
