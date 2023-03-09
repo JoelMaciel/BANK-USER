@@ -17,17 +17,17 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @EqualsAndHashCode
-public class Cliente implements Serializable {
+public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID clienteId;
+    private UUID clientId;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
     private String cpf;
@@ -37,20 +37,20 @@ public class Cliente implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
-    private String senha;
+    private String password;
 
     @Column(nullable = false)
-    private String contato;
+    private String phoneNumber;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataCriacao;
+    private OffsetDateTime creationDate;
 
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataAtualizacao;
+    private OffsetDateTime updateDate;
 
     @Embedded
-    private Endereco endereco;
+    private Address address;
 
 }
