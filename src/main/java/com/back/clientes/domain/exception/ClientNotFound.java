@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.UUID;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ClienteNaoEncontrado extends EntidadeNaoEncontradaException {
+public class ClientNotFound extends BusinessException {
 
     private static final long serialVersionUID = 1L;
 
-    public ClienteNaoEncontrado(String mensagem) {
+    public ClientNotFound(String mensagem) {
         super(mensagem);
     }
 
-    public ClienteNaoEncontrado(UUID cidadeId) {
-        this( String.format("Não existe um cadastro de cliente com código %s", cidadeId));
+    public ClientNotFound(UUID clienteId) {
+        this( String.format("Não existe um cadastro de cliente com código %s", clienteId));
     }
 
 }
