@@ -1,6 +1,8 @@
 package com.back.clientes.domain.services;
 
 import com.back.clientes.api.model.ClientDto;
+import com.back.clientes.api.model.input.ClientInputUpdate;
+import com.back.clientes.api.model.input.PasswordIunput;
 import com.back.clientes.domain.model.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +18,14 @@ public interface ClientService {
 
     Client save(Client client);
 
-    boolean existsClientCpf(String cpf);
+    ClientDto updateClient(UUID clientId ,ClientInputUpdate clientUpdate);
 
-    boolean existsClientEmail(String email);
 
     Page<ClientDto> findAll(Specification<Client> spec, Pageable pageable);
 
     public Client searchOrFail(UUID clientId) ;
+
+    public  boolean existsClientEmailOrCpf(String email, String cpf);
+
+    public void updatePassword(UUID clientId, String passwordCurrent, String newPassword);
 }
