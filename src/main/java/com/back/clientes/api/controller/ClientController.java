@@ -6,7 +6,7 @@ import com.back.clientes.api.model.converter.ClientInputUpdatePasswordToDomain;
 import com.back.clientes.api.model.converter.ClientInputUpdateToDomain;
 import com.back.clientes.api.model.converter.ClientToDto;
 import com.back.clientes.api.model.input.ClientInputUpdate;
-import com.back.clientes.api.model.input.ClientInputUpdatePassword;
+import com.back.clientes.api.model.input.PasswordIunput;
 import com.back.clientes.domain.model.Client;
 import com.back.clientes.domain.services.ClientService;
 import com.back.clientes.infrastructure.specification.SpecificationTemplate;
@@ -16,11 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @RestController
@@ -59,34 +57,21 @@ public class ClientController {
     @PutMapping("/{clientId}")
     public ClientDto updateClient(@PathVariable UUID clientId ,
                                @RequestBody @Valid ClientInputUpdate clienteUpdate) {
-        Client currentClient = clientService.searchOrFail(clientId);
-
-        clientInputUpdateToDomain.copyToDomainObject(clienteUpdate, currentClient);
-        currentClient.setUpdateDate(OffsetDateTime.now());
-        var newClient = clientService.save(currentClient);
-
-        return clientToDto.converter(newClient);
+       var clienteDto = clientService.updateClient(clientId, clienteUpdate);
+       return  clienteDto;
     }
+
 
     @PutMapping("/{clientId}/password")
-    public ResponseEntity<Object> updatePassword(@PathVariable UUID clientId ,
-                                                 @RequestBody @Valid ClientInputUpdatePassword clientUpdate) {
-        Client client = clientService.searchOrFail(clientId);
-
-        if(!client.getPassword().equals(clientUpdate.getOldPassword())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password");
-        }
-        clientUpdatePasswordToDomain.copyToDomainObject(clientUpdate, client);
-        client.setUpdateDate(OffsetDateTime.now());
-        clientService.save(client);
-
-        return ResponseEntity.status(HttpStatus.OK).body(clientToDto.converter(client)) ;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePassword(@PathVariable UUID clientId , @RequestBody @Valid PasswordIunput passwordIunput) {
+        clientService.updatePassword(clientId, passwordIunput.getPasswordCurrent(), passwordIunput.getNewPassword());
 
     }
 
-    @DeleteMapping("/{clienteId}")
+    @DeleteMapping("/{clientId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable UUID clienteId) {
-        clientService.delete(clienteId);
+    public void remover(@PathVariable UUID clientId) {
+        clientService.delete(clientId);
     }
 }

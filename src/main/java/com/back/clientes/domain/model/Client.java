@@ -53,4 +53,12 @@ public class Client implements Serializable {
     @Embedded
     private Address address;
 
+    public boolean passwordMatches(String oldPassword) {
+        return getPassword().equals(oldPassword);
+    }
+
+    public boolean passwordDoesNotMatch(String oldPassword) {
+        return !passwordMatches(oldPassword);
+    }
+
 }

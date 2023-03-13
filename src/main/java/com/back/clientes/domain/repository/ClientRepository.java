@@ -12,4 +12,8 @@ public interface ClientRepository extends JpaRepository<Client, UUID> , JpaSpeci
 
     boolean existsByEmail(String email);
 
+    boolean existsByEmailOrCpf(String email, String cpf);
+
+    boolean existsByPassword(String password);
+
 }

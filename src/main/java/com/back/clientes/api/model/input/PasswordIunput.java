@@ -9,13 +9,13 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ClientInputUpdatePassword {
+public class PasswordIunput {
 
     @NotBlank
     @Size(min = 8, max = 30)
-    private String password;
+    private String passwordCurrent;
 
     @NotBlank
-    private String oldPassword;
+    private String newPassword;
 
 }
