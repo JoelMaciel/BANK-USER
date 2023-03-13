@@ -39,6 +39,12 @@ public class ClientServiceImpl implements ClientService {
     private ClientToDto clientToDto;
 
     @Override
+    public Page<ClientDto> findAll(Specification<Client> spec, Pageable pageable) {
+        Page<Client> clientsPage = clientRepository.findAll(spec, pageable);
+        return clientToDto.convertToPageDto(clientsPage, pageable);
+    }
+
+    @Override
     public List<ClientDto> listClient() {
         List<Client> clients = clientRepository.findAll();
         return clientToDto.toCollectionDto(clients);
@@ -89,13 +95,6 @@ public class ClientServiceImpl implements ClientService {
             throw new InvalidPasswordException("Error: Mismatched old password");
         }
         client.setPassword(newPassword);
-    }
-
-
-    @Override
-    public Page<ClientDto> findAll(Specification<Client> spec, Pageable pageable) {
-        Page<Client> clientsPage = clientRepository.findAll(spec, pageable);
-        return clientToDto.convertToPageDto(clientsPage, pageable);
     }
 
     public Client searchOrFail(UUID clientId) {
