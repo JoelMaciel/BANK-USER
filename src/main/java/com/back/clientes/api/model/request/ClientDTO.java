@@ -1,8 +1,7 @@
-package com.back.clientes.api.model.input;
+package com.back.clientes.api.model.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
+import com.back.clientes.api.model.response.AddressDto;
+import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -11,11 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-@Getter
-@Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ClientInput {
-
+@Data
+public class ClientDTO {
 
     @NotBlank
     private String name;
@@ -36,5 +32,5 @@ public class ClientInput {
 
     @NotNull
     @Valid
-    private AddressInput address;
+    private AddressDto address;
 }

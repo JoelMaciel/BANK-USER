@@ -1,9 +1,7 @@
 package com.back.clientes.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,14 +12,11 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@EqualsAndHashCode
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID clientId;
@@ -53,12 +48,12 @@ public class Client implements Serializable {
     @Embedded
     private Address address;
 
-    public boolean passwordMatches(String oldPassword) {
-        return getPassword().equals(oldPassword);
+    public boolean passwordMatches(String passwordCurrent) {
+        return getPassword().equals(passwordCurrent);
     }
 
-    public boolean passwordDoesNotMatch(String oldPassword) {
-        return !passwordMatches(oldPassword);
+    public boolean passwordDoesNotMatch(String passwordCurrent) {
+        return !passwordMatches(passwordCurrent);
     }
 
 }

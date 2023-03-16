@@ -14,5 +14,5 @@ public class SpecificationTemplate {
             @Spec(path = "cpf", spec = Equal.class),
             @Spec(path = "email", spec = Like.class)
     })
-    public interface ClienteSpec extends Specification<Client> {}
+    public interface ClientSpec extends Specification<Client> {}
 }

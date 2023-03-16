@@ -1,19 +1,15 @@
-package com.back.clientes.api.model.input;
+package com.back.clientes.api.model.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
+import com.back.clientes.api.model.response.AddressDto;
+import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-
-@Getter
-@Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ClientInputUpdate {
+@Data
+public class ClientDTOUpdate {
 
     @NotBlank
     @Email
@@ -24,5 +20,5 @@ public class ClientInputUpdate {
 
     @NotNull
     @Valid
-    private AddressInput address;
+    private AddressDto address;
 }

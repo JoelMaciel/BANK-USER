@@ -1,10 +1,8 @@
-package com.back.clientes.api.model;
+package com.back.clientes.api.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class AddressDto {
 
     private String zipCode;
@@ -18,7 +16,5 @@ public class AddressDto {
     private String neighborhood;
 
     private String city;
-
-    private AddressDto address;
 
 }
