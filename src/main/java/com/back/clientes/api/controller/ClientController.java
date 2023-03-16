@@ -1,16 +1,12 @@
 package com.back.clientes.api.controller;
 
-import com.back.clientes.api.model.ClientDto;
-import com.back.clientes.api.model.converter.ClientInputToDomain;
-import com.back.clientes.api.model.converter.ClientInputUpdatePasswordToDomain;
-import com.back.clientes.api.model.converter.ClientInputUpdateToDomain;
-import com.back.clientes.api.model.converter.ClientToDto;
-import com.back.clientes.api.model.input.ClientInputUpdate;
-import com.back.clientes.api.model.input.PasswordIunput;
-import com.back.clientes.domain.model.Client;
+import com.back.clientes.api.model.converter.ClientToDTO;
+import com.back.clientes.api.model.request.ClientDTOUpdate;
+import com.back.clientes.api.model.request.PasswordDTO;
+import com.back.clientes.api.model.response.ClientSummaryDTO;
 import com.back.clientes.domain.services.ClientService;
 import com.back.clientes.infrastructure.specification.SpecificationTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,56 +18,40 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private ClientToDto clientToDto;
-
-    @Autowired
-    private ClientInputToDomain clientInputToDomain;
-
-    @Autowired
-    private ClientInputUpdateToDomain clientInputUpdateToDomain;
-
-    @Autowired
-    private ClientInputUpdatePasswordToDomain clientUpdatePasswordToDomain;
-
+    private final ClientService clientService;
+    private final ClientToDTO clientToDTO;
 
     @GetMapping
-    public Page<ClientDto> getAllClients(SpecificationTemplate.ClienteSpec spec,
-                                  @PageableDefault(page = 0, size = 10, sort = "clientId", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<ClientSummaryDTO> getAllClients(SpecificationTemplate.ClientSpec spec,
+         @PageableDefault(page = 0, size = 10, sort = "clientId", direction = Sort.Direction.ASC) Pageable pageable) {
         return clientService.findAll(spec, pageable);
     }
 
     @GetMapping("/{clientId}")
-    public ClientDto getOneClient(@PathVariable UUID clientId) {
-        Client client = clientService.searchOrFail(clientId);
-        return  clientToDto.converter(client);
+    public ClientSummaryDTO getOneClient(@PathVariable UUID clientId) {
+        return  clientService.findByClient(clientId);
     }
 
     @PutMapping("/{clientId}")
-    public ClientDto updateClient(@PathVariable UUID clientId ,
-                               @RequestBody @Valid ClientInputUpdate clienteUpdate) {
-       var clienteDto = clientService.updateClient(clientId, clienteUpdate);
-       return  clienteDto;
+    public ClientSummaryDTO updateClient(@PathVariable UUID clientId, @RequestBody @Valid ClientDTOUpdate clientUpdate) {
+       return  clientService.updateClient(clientId, clientUpdate);
     }
-
 
     @PutMapping("/{clientId}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePassword(@PathVariable UUID clientId , @RequestBody @Valid PasswordIunput passwordIunput) {
-        clientService.updatePassword(clientId, passwordIunput.getPasswordCurrent(), passwordIunput.getNewPassword());
+    public void updatePassword(@PathVariable UUID clientId, @RequestBody @Valid PasswordDTO passwordDTO) {
+        clientService.updatePassword(clientId, passwordDTO.getPasswordCurrent(), passwordDTO.getNewPassword());
 
     }
 
     @DeleteMapping("/{clientId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable UUID clientId) {
+    public void remove(@PathVariable UUID clientId) {
         clientService.delete(clientId);
     }
 }

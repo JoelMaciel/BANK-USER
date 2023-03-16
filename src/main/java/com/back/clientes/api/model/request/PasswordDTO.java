@@ -1,15 +1,13 @@
-package com.back.clientes.api.model.input;
+package com.back.clientes.api.model.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
-@Getter
-@Setter
-public class PasswordIunput {
+@Data
+public class PasswordDTO {
 
     @NotBlank
     @Size(min = 8, max = 30)
