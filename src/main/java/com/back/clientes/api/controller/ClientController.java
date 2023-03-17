@@ -28,8 +28,9 @@ public class ClientController {
 
     @GetMapping
     public Page<ClientSummaryDTO> getAllClients(SpecificationTemplate.ClientSpec spec,
-         @PageableDefault(page = 0, size = 10, sort = "clientId", direction = Sort.Direction.ASC) Pageable pageable) {
-        return clientService.findAll(spec, pageable);
+         @PageableDefault(page = 0, size = 10, sort = "clientId", direction = Sort.Direction.ASC) Pageable pageable,
+         @RequestParam(required = false) UUID accountId) {
+        return clientService.findAll(spec, accountId, pageable);
     }
 
     @GetMapping("/{clientId}")

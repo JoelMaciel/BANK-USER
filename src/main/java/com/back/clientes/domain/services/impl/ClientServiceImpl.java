@@ -12,6 +12,7 @@ import com.back.clientes.domain.exception.InvalidPasswordException;
 import com.back.clientes.domain.model.Client;
 import com.back.clientes.domain.repository.ClientRepository;
 import com.back.clientes.domain.services.ClientService;
+import com.back.clientes.infrastructure.specification.SpecificationTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,8 +37,14 @@ public class ClientServiceImpl implements ClientService {
     private final ClientToDTO clientToDTO;
 
     @Override
-    public Page<ClientSummaryDTO> findAll(Specification<Client> spec, Pageable pageable) {
-        Page<Client> clientsPage = clientRepository.findAll(spec, pageable);
+    public Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable) {
+        Page<Client> clientsPage = null;
+
+        if(accountId != null) {
+            clientsPage = clientRepository.findAll(SpecificationTemplate.clientAccountId(accountId).and(spec), pageable);
+        } else {
+            clientsPage = clientRepository.findAll(spec, pageable);
+        }
         return clientToDTO.convertToPageDto(clientsPage, pageable);
     }
 

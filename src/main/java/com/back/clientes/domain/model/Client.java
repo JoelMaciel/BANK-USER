@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -47,6 +48,9 @@ public class Client implements Serializable {
 
     @Embedded
     private Address address;
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    private Set<ClientAccount> clientsAccounts;
 
     public boolean passwordMatches(String passwordCurrent) {
         return getPassword().equals(passwordCurrent);

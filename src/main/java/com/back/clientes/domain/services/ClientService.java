@@ -4,6 +4,7 @@ import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
 import com.back.clientes.domain.model.Client;
+import com.back.clientes.infrastructure.specification.SpecificationTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,10 +22,11 @@ public interface ClientService {
     ClientSummaryDTO updateClient(UUID clientId , ClientDTOUpdate clientUpdate);
 
 
-    Page<ClientSummaryDTO> findAll(Specification<Client> spec, Pageable pageable);
+    Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable);
 
     public Client searchOrFail(UUID clientId) ;
 
 
     public void updatePassword(UUID clientId, String passwordCurrent, String newPassword);
+
 }
