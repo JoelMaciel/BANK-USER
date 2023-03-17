@@ -1,4 +1,4 @@
-package com.back.clientes.api.model.converter;
+package com.back.clientes.api.model.converters;
 
 import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.request.PasswordDTO;

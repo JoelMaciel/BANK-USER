@@ -1,8 +1,8 @@
 package com.back.clientes.domain.services.impl;
 
-import com.back.clientes.api.model.converter.ClientDTOToDomain;
-import com.back.clientes.api.model.converter.ClientDTOUpdateToDomain;
-import com.back.clientes.api.model.converter.ClientToDTO;
+import com.back.clientes.api.model.converters.ClientDTOToDomain;
+import com.back.clientes.api.model.converters.ClientDTOUpdateToDomain;
+import com.back.clientes.api.model.converters.ClientToDTO;
 import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
 import com.back.clientes.api.model.response.ClientSummaryDTO;

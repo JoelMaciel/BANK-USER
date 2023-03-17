@@ -1,6 +1,6 @@
-package com.back.clientes.api.controller;
+package com.back.clientes.api.controllers;
 
-import com.back.clientes.api.model.converter.ClientToDTO;
+import com.back.clientes.api.model.converters.ClientToDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
 import com.back.clientes.api.model.request.PasswordDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;

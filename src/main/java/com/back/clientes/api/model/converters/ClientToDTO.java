@@ -1,7 +1,6 @@
-package com.back.clientes.api.model.converter;
+package com.back.clientes.api.model.converters;
 
 
-import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
 import com.back.clientes.domain.model.Client;
 import lombok.RequiredArgsConstructor;

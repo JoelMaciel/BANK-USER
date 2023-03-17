@@ -14,7 +14,7 @@ import java.util.UUID;
 public class SpecificationTemplate {
 
     @And({
-            @Spec(path = "nome", spec = Like.class),
+            @Spec(path = "name", spec = Like.class),
             @Spec(path = "cpf", spec = Equal.class),
             @Spec(path = "email", spec = Like.class)
     })

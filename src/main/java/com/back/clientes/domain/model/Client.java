@@ -1,6 +1,7 @@
 package com.back.clientes.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
@@ -49,6 +50,7 @@ public class Client implements Serializable {
     @Embedded
     private Address address;
 
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<ClientAccount> clientsAccounts;
 
