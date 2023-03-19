@@ -1,5 +1,6 @@
 package com.back.clientes.domain.model;
 
+import com.back.clientes.domain.enums.ClientType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -38,6 +39,9 @@ public class Client implements Serializable {
 
     @Column(nullable = false)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private ClientType clientType;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")

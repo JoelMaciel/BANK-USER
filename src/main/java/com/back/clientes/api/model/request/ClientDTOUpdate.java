@@ -1,6 +1,7 @@
 package com.back.clientes.api.model.request;
 
 import com.back.clientes.api.model.response.AddressDto;
+import com.back.clientes.domain.enums.ClientType;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -17,6 +18,9 @@ public class ClientDTOUpdate {
 
     @NotBlank
     private String phoneNumber;
+
+    @NotNull
+    private ClientType clientType;
 
     @NotNull
     @Valid
