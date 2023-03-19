@@ -23,3 +23,8 @@ logging:
     root: INFO
     org.springframework.web: DEBUG
     org.hibernate: INFO
+
+bank:
+  api:
+    url:
+      account: 'http://localhost:8082'

@@ -54,6 +54,10 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<ClientAccount> clientsAccounts;
 
+    public ClientAccount converterToClientAccount(UUID accountId) {
+        return new ClientAccount(null, this, accountId);
+    }
+
     public boolean passwordMatches(String passwordCurrent) {
         return getPassword().equals(passwordCurrent);
     }

@@ -24,9 +24,9 @@ public interface ClientService {
 
     Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable);
 
-    public Client searchOrFail(UUID clientId) ;
+     Client searchOrFail(UUID clientId) ;
 
 
-    public void updatePassword(UUID clientId, String passwordCurrent, String newPassword);
+     void updatePassword(UUID clientId, String passwordCurrent, String newPassword);
 
 }

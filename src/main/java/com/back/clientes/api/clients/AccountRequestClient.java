@@ -5,6 +5,7 @@ import com.back.clientes.api.model.response.ResponsePageDTO;
 import com.back.clientes.domain.services.UtilsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,19 +21,20 @@ import java.util.UUID;
 @Log4j2
 @RequiredArgsConstructor
 @Component
-public class ClientRequestClient {
+public class AccountRequestClient {
 
     private final RestTemplate restTemplate;
 
     private final UtilsService utilsService;
 
-    String REQUEST_URI = "http://localhost:8082";
+    @Value("${bank.api.url.account}")
+    String REQUEST_URI_ACCOUNT;
 
     public Page<AccountDTO> getAllAccountsByClient(UUID clientId, Pageable pageable) {
         List<AccountDTO> searchResult = null;
         ResponseEntity<ResponsePageDTO<AccountDTO>> result = null;
 
-        String url = utilsService.createUrl(clientId, pageable);
+        String url = REQUEST_URI_ACCOUNT + utilsService.createUrl(clientId, pageable);
 
         log.debug("Request URL: {}", url);
         log.info("Request URL: {}", url);
@@ -41,7 +43,6 @@ public class ClientRequestClient {
                                  new ParameterizedTypeReference<ResponsePageDTO<AccountDTO>>() {};
             result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
             searchResult = result.getBody().getContent();
-        log.debug("Response Number of Elements: {}", searchResult.size());
         } catch (HttpStatusCodeException e) {
         log.error("Error request/ accounts {}", e);
         }

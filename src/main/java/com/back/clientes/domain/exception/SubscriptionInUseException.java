@@ -1,8 +1,8 @@
 package com.back.clientes.domain.exception;
 
-public class EntityInUseException extends BusinessException {
+public class SubscriptionInUseException extends BusinessException {
     private static final long serialVersionUID = 1L;
-    public EntityInUseException(String mensagem) {
+    public SubscriptionInUseException(String mensagem) {
         super(mensagem);
     }
 }
