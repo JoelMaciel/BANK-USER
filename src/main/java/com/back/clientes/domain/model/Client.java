@@ -61,7 +61,7 @@ public class Client implements Serializable {
     private Address address;
 
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ClientAccount> clientsAccounts;
 
     public ClientAccount converterToClientAccount(UUID accountId) {

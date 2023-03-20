@@ -12,6 +12,8 @@ import com.back.clientes.domain.exception.ClientNotFound;
 import com.back.clientes.domain.exception.EntityInUseException;
 import com.back.clientes.domain.exception.InvalidPasswordException;
 import com.back.clientes.domain.model.Client;
+import com.back.clientes.domain.model.ClientAccount;
+import com.back.clientes.domain.repository.ClientAccountRepository;
 import com.back.clientes.domain.repository.ClientRepository;
 import com.back.clientes.domain.services.ClientService;
 import com.back.clientes.infrastructure.specification.SpecificationTemplate;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -38,6 +41,8 @@ public class ClientServiceImpl implements ClientService {
     private final ClientDTOToDomain clientDTOToDomain;
     private final ClientDTOUpdateToDomain clientDTOUpdateToDomain;
     private final ClientToDTO clientToDTO;
+
+    private final ClientAccountRepository clientAccountRepository;
 
     @Override
     public Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable) {
@@ -80,17 +85,11 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void delete(UUID clientId) {
-        try {
-            clientRepository.deleteById(clientId);
-            clientRepository.flush();
-
-        } catch (EmptyResultDataAccessException e) {
-            throw new ClientNotFound(clientId);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(
-                    String.format(MSG_CLIENT_IN_USE, clientId));
-        }
+        List<ClientAccount> clientAccounts = clientAccountRepository.findAllClientAccountIntoClient(clientId);
+         if(!clientAccounts.isEmpty()) {
+             clientAccountRepository.deleteAll(clientAccounts);
+         }
+         clientRepository.delete(searchOrFail(clientId));
     }
 
     @Transactional
