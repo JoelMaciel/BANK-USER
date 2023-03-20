@@ -12,7 +12,7 @@ public class ClientSummaryDTO {
     private String email;
     private String phoneNumber;
     private ClientType clientType;
-    private AddressDto address;
+    private AddressDTO address;
 
     public static ClientSummaryDTO fromDTO(Client client) {
         ClientSummaryDTO dto = new ClientSummaryDTO();
@@ -21,7 +21,7 @@ public class ClientSummaryDTO {
         dto.setEmail(client.getEmail());
         dto.setPhoneNumber(client.getPhoneNumber());
         dto.setClientType(client.getClientType());
-        dto.setAddress(AddressDto.fromDto(client.getAddress()));
+        dto.setAddress(AddressDTO.fromDto(client.getAddress()));
         return dto;
     }
 }

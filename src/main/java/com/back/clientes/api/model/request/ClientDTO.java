@@ -1,8 +1,7 @@
 package com.back.clientes.api.model.request;
 
-import com.back.clientes.api.model.response.AddressDto;
+import com.back.clientes.api.model.response.AddressDTO;
 import com.back.clientes.domain.enums.ClientType;
-import com.back.clientes.domain.model.Client;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,6 +38,6 @@ public class ClientDTO {
 
     @NotNull
     @Valid
-    private AddressDto address;
+    private AddressDTO address;
 
 }

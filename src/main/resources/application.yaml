@@ -2,6 +2,8 @@ server:
   port: 8087
 
 spring:
+  application:
+    name: bank-user-service
   datasource:
     url: jdbc:mysql://localhost/bank_client?createDatabaseIfNotExist=true&serverTimeZone=UTC
     username: root
@@ -27,4 +29,11 @@ logging:
 bank:
   api:
     url:
-      account: 'http://localhost:8082'
+      account: 'http://bank-account-service'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    hostname: localhost

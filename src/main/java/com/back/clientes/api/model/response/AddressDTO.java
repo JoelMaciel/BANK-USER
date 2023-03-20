@@ -1,12 +1,16 @@
 package com.back.clientes.api.model.response;
 
 import com.back.clientes.domain.model.Address;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class AddressDto {
+public class AddressDTO {
 
     private String zipCode;
 
@@ -20,8 +24,8 @@ public class AddressDto {
 
     private String city;
 
-    public static AddressDto fromDto(Address address) {
-        return AddressDto.builder()
+    public static AddressDTO fromDto(Address address) {
+        return AddressDTO.builder()
                 .zipCode(address.getZipCode())
                 .street(address.getStreet())
                 .number(address.getNumber())
