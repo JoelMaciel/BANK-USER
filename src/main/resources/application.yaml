@@ -31,7 +31,7 @@ logging:
 bank:
   api:
     url:
-      account: 'http://bank-account-service'
+      account: 'http://bank-account-service/bank-account'
 
 eureka:
   client:
