@@ -1,6 +1,7 @@
 package com.back.clientes.domain.services;
 
 import com.back.clientes.api.model.request.ClientDTO;
+import com.back.clientes.api.model.request.EmployeeDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
 import com.back.clientes.domain.model.Client;
@@ -29,4 +30,5 @@ public interface ClientService {
 
      void updatePassword(UUID clientId, String passwordCurrent, String newPassword);
 
+    ClientSummaryDTO saveEmployee(EmployeeDTO employeeDTO);
 }

@@ -2,6 +2,8 @@ package com.back.clientes.api.model.request;
 
 import com.back.clientes.api.model.response.AddressDto;
 import com.back.clientes.domain.enums.ClientType;
+import com.back.clientes.domain.model.Client;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -12,6 +14,7 @@ import javax.validation.constraints.Size;
 
 
 @Data
+@Builder
 public class ClientDTO {
 
     @NotBlank
@@ -37,4 +40,5 @@ public class ClientDTO {
     @NotNull
     @Valid
     private AddressDto address;
+
 }

@@ -5,7 +5,9 @@ import com.back.clientes.api.model.converters.ClientDTOUpdateToDomain;
 import com.back.clientes.api.model.converters.ClientToDTO;
 import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
+import com.back.clientes.api.model.request.EmployeeDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
+import com.back.clientes.domain.enums.ClientType;
 import com.back.clientes.domain.exception.ClientNotFound;
 import com.back.clientes.domain.exception.EntityInUseException;
 import com.back.clientes.domain.exception.InvalidPasswordException;
@@ -22,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -99,6 +102,17 @@ public class ClientServiceImpl implements ClientService {
             throw new InvalidPasswordException("Error: Mismatched old password");
         }
         client.setPassword(newPassword);
+    }
+
+    @Override
+    public ClientSummaryDTO saveEmployee(EmployeeDTO employeeDTO) {
+        var client = searchOrFail(employeeDTO.getClientId())
+                .toBuilder()
+                .clientType(ClientType.EMPLOYEE)
+                .updateDate(OffsetDateTime.now())
+                .build();
+        clientRepository.save(client);
+        return ClientSummaryDTO.fromDTO(client);
     }
 
     public Client searchOrFail(UUID clientId) {

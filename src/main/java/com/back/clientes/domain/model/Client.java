@@ -3,7 +3,10 @@ package com.back.clientes.domain.model;
 import com.back.clientes.domain.enums.ClientType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,6 +18,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -18,6 +18,7 @@ public class ClientToDTO {
         return modelMapper.map(client, ClientSummaryDTO.class);
     }
 
+
     public Page<ClientSummaryDTO> convertToPageDto(Page<Client> clientsPage, Pageable pageable) {
             Page<ClientSummaryDTO> clientDTOPage = clientsPage.map(
                     client -> modelMapper.map(client, ClientSummaryDTO.class));
