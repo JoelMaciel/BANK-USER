@@ -13,4 +13,10 @@ public interface ClientAccountService {
     ClientAccountDTO saveClientInAccount(UUID clientId, ClientAccountDTO clientAccountDTO);
 
     ClientAccount save(ClientAccount clientAccount);
+
+    boolean existsByAccountId(UUID accountId);
+
+   void deleteClientAccount(UUID accountId);
+    void deleteClientAccountByAccount(UUID accountId);
+
 }

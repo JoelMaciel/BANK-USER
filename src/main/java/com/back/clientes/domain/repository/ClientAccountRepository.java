@@ -15,5 +15,10 @@ public interface ClientAccountRepository extends JpaRepository<ClientAccount, UU
 
     @Query(value = "select * from tb_clients_accounts where client_id = :clientId", nativeQuery = true)
     List<ClientAccount> findAllClientAccountIntoClient(@Param("clientId") UUID clientId);
+
+    boolean existsByAccountId(UUID accountId);
+
+    void deleteByAccountId(UUID accountId);
+
 }
 

@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/clients")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ClientAccountController {
 
@@ -25,17 +24,23 @@ public class ClientAccountController {
 
     private final ClientAccountService clientAccountService;
 
-    @GetMapping("/{clientId}/accounts")
+    @GetMapping("/clients/{clientId}/accounts")
     public Page<AccountDTO> getAllAccountByClient(@PageableDefault(page = 0, size = 10, sort = "accountId",
             direction = Sort.Direction.ASC) Pageable pageable, @PathVariable(value = "clientId") UUID clientId){
     return accountRequestClient.getAllAccountsByClient(clientId, pageable);
     }
 
-    @PostMapping("/{clientId}/accounts/subscription")
+    @PostMapping("/clients/{clientId}/accounts/subscription")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientAccountDTO saveSubscriptionClientInAccount(@PathVariable(value = "clientId") UUID clientId,
                                           @RequestBody @Valid ClientAccountDTO clientAccountDTO) {
        return clientAccountService.saveClientInAccount(clientId, clientAccountDTO);
-
     }
+
+    @DeleteMapping("/clients/accounts/{accountId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClientAccountByAccount(@PathVariable(value = "accountId") UUID accountId) {
+      clientAccountService.deleteClientAccount(accountId);
+    }
+
 }

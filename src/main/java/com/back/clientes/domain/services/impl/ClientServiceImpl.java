@@ -48,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
     public Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable) {
         Page<Client> clientsPage = null;
 
-        if(accountId != null) {
+        if (accountId != null) {
             clientsPage = clientRepository.findAll(SpecificationTemplate.clientAccountId(accountId).and(spec), pageable);
         } else {
             clientsPage = clientRepository.findAll(spec, pageable);
@@ -58,15 +58,15 @@ public class ClientServiceImpl implements ClientService {
 
     public ClientSummaryDTO findByClient(UUID clientId) {
         var client = searchOrFail(clientId);
-       return clientToDTO.converter(client);
+        return clientToDTO.converter(client);
     }
 
     @Transactional
     @Override
-    public ClientSummaryDTO updateClient(UUID clientId , ClientDTOUpdate clientDTOUpdate) {
+    public ClientSummaryDTO updateClient(UUID clientId, ClientDTOUpdate clientDTOUpdate) {
         Client client = searchOrFail(clientId);
         clientDTOUpdateToDomain.copyToDomainObject(clientDTOUpdate, client);
-        return  clientToDTO.converter(clientRepository.save(client));
+        return clientToDTO.converter(clientRepository.save(client));
 
     }
 
@@ -86,10 +86,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void delete(UUID clientId) {
         List<ClientAccount> clientAccounts = clientAccountRepository.findAllClientAccountIntoClient(clientId);
-         if(!clientAccounts.isEmpty()) {
-             clientAccountRepository.deleteAll(clientAccounts);
-         }
-         clientRepository.delete(searchOrFail(clientId));
+        if (!clientAccounts.isEmpty()) {
+            clientAccountRepository.deleteAll(clientAccounts);
+        }
+        clientRepository.delete(searchOrFail(clientId));
     }
 
     @Transactional
