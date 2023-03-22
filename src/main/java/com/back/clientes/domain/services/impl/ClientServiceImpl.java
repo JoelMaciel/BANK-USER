@@ -1,17 +1,23 @@
 package com.back.clientes.domain.services.impl;
 
-import com.back.clientes.api.model.converter.ClientDTOToDomain;
-import com.back.clientes.api.model.converter.ClientDTOUpdateToDomain;
-import com.back.clientes.api.model.converter.ClientToDTO;
+import com.back.clientes.api.clients.AccountRequestClient;
+import com.back.clientes.api.model.converters.ClientDTOToDomain;
+import com.back.clientes.api.model.converters.ClientDTOUpdateToDomain;
+import com.back.clientes.api.model.converters.ClientToDTO;
 import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.request.ClientDTOUpdate;
+import com.back.clientes.api.model.request.EmployeeDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
+import com.back.clientes.domain.enums.ClientType;
 import com.back.clientes.domain.exception.ClientNotFound;
 import com.back.clientes.domain.exception.EntityInUseException;
 import com.back.clientes.domain.exception.InvalidPasswordException;
 import com.back.clientes.domain.model.Client;
+import com.back.clientes.domain.model.ClientAccount;
+import com.back.clientes.domain.repository.ClientAccountRepository;
 import com.back.clientes.domain.repository.ClientRepository;
 import com.back.clientes.domain.services.ClientService;
+import com.back.clientes.infrastructure.specification.SpecificationTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +27,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -35,9 +43,18 @@ public class ClientServiceImpl implements ClientService {
     private final ClientDTOUpdateToDomain clientDTOUpdateToDomain;
     private final ClientToDTO clientToDTO;
 
+    private final AccountRequestClient accountRequestClient;
+    private final ClientAccountRepository clientAccountRepository;
+
     @Override
-    public Page<ClientSummaryDTO> findAll(Specification<Client> spec, Pageable pageable) {
-        Page<Client> clientsPage = clientRepository.findAll(spec, pageable);
+    public Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable) {
+        Page<Client> clientsPage = null;
+
+        if(accountId != null) {
+            clientsPage = clientRepository.findAll(SpecificationTemplate.clientAccountId(accountId).and(spec), pageable);
+        } else {
+            clientsPage = clientRepository.findAll(spec, pageable);
+        }
         return clientToDTO.convertToPageDto(clientsPage, pageable);
     }
 
@@ -70,17 +87,17 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void delete(UUID clientId) {
-        try {
-            clientRepository.deleteById(clientId);
-            clientRepository.flush();
-
-        } catch (EmptyResultDataAccessException e) {
-            throw new ClientNotFound(clientId);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(
-                    String.format(MSG_CLIENT_IN_USE, clientId));
-        }
+        boolean deleteClientAccountInClient = false;
+        searchOrFail(clientId);
+        var clientAccounts = clientAccountRepository.findByClientClientId(clientId);
+         if(!clientAccounts.isEmpty()) {
+             clientAccountRepository.deleteAll(clientAccounts.get());
+             deleteClientAccountInClient = true;
+         }
+         clientRepository.delete(searchOrFail(clientId));
+         if(deleteClientAccountInClient) {
+             accountRequestClient.deleteClientInAccount(clientId);
+         }
     }
 
     @Transactional
@@ -92,6 +109,17 @@ public class ClientServiceImpl implements ClientService {
             throw new InvalidPasswordException("Error: Mismatched old password");
         }
         client.setPassword(newPassword);
+    }
+
+    @Override
+    public ClientSummaryDTO saveEmployee(EmployeeDTO employeeDTO) {
+        var client = searchOrFail(employeeDTO.getClientId())
+                .toBuilder()
+                .clientType(ClientType.EMPLOYEE)
+                .updateDate(OffsetDateTime.now())
+                .build();
+        clientRepository.save(client);
+        return ClientSummaryDTO.fromDTO(client);
     }
 
     public Client searchOrFail(UUID clientId) {

@@ -1,7 +1,11 @@
 package com.back.clientes.api.model.request;
 
-import com.back.clientes.api.model.response.AddressDto;
+import com.back.clientes.api.model.response.AddressDTO;
+import com.back.clientes.domain.enums.ClientType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -11,6 +15,9 @@ import javax.validation.constraints.Size;
 
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ClientDTO {
 
     @NotBlank
@@ -31,6 +38,10 @@ public class ClientDTO {
     private String phoneNumber;
 
     @NotNull
+    private ClientType clientType;
+
+    @NotNull
     @Valid
-    private AddressDto address;
+    private AddressDTO address;
+
 }

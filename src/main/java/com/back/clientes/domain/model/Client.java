@@ -1,17 +1,25 @@
 package com.back.clientes.domain.model;
 
+import com.back.clientes.domain.enums.ClientType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,6 +45,9 @@ public class Client implements Serializable {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private ClientType clientType;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime creationDate;
@@ -47,6 +58,15 @@ public class Client implements Serializable {
 
     @Embedded
     private Address address;
+
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<ClientAccount> clientsAccounts;
+
+    public ClientAccount converterToClientAccount(UUID accountId) {
+        return new ClientAccount(null, this, accountId);
+    }
 
     public boolean passwordMatches(String passwordCurrent) {
         return getPassword().equals(passwordCurrent);

@@ -1,7 +1,11 @@
 server:
   port: 8087
+  servlet:
+    context-path: '/bank-user/'
 
 spring:
+  application:
+    name: bank-user-service
   datasource:
     url: jdbc:mysql://localhost/bank_client?createDatabaseIfNotExist=true&serverTimeZone=UTC
     username: root
@@ -17,3 +21,21 @@ spring:
       hibernate:
         show_sql: true
 
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+
+bank:
+  api:
+    url:
+      account: 'http://bank-account-service/bank-account'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    hostname: localhost

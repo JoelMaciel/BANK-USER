@@ -1,20 +1,20 @@
-create table client (
-	client_id char(36) not null,
-	name varchar(80) not null,
-	cpf varchar(11) unique not null,
-	email varchar(35) unique not null,
-	password varchar(30) not null,
-	phone_number varchar(15) not null,
-	creation_date datetime not null,
-	update_date datetime not null,
-
-
-	zip_code varchar(13),
-	street varchar(100),
-	number varchar(20),
-	complement varchar(60),
-	neighborhood varchar(60),
-	city varchar(30),
-
-	primary key (client_id)
-) engine=InnoDB default charset=utf8;
+CREATE TABLE `client` (
+  `client_id` varchar(255) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `email` varchar(35) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `phone_number` varchar(15) NOT NULL,
+  `client_type` varchar(15) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `zip_code` varchar(13) DEFAULT NULL,
+  `street` varchar(100) DEFAULT NULL,
+  `number` varchar(20) DEFAULT NULL,
+  `complement` varchar(60) DEFAULT NULL,
+  `neighborhood` varchar(60) DEFAULT NULL,
+  `city` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`client_id`),
+  UNIQUE KEY `cpf` (`cpf`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

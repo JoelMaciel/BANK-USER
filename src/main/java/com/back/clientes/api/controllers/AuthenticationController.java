@@ -1,4 +1,4 @@
-package com.back.clientes.api.controller;
+package com.back.clientes.api.controllers;
 
 import com.back.clientes.api.model.request.ClientDTO;
 import com.back.clientes.api.model.response.ClientSummaryDTO;
