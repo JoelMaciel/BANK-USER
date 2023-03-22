@@ -7,11 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -61,7 +60,8 @@ public class Client implements Serializable {
     private Address address;
 
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<ClientAccount> clientsAccounts;
 
     public ClientAccount converterToClientAccount(UUID accountId) {

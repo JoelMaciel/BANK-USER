@@ -1,5 +1,6 @@
 package com.back.clientes.domain.services.impl;
 
+import com.back.clientes.api.clients.AccountRequestClient;
 import com.back.clientes.api.model.converters.ClientDTOToDomain;
 import com.back.clientes.api.model.converters.ClientDTOUpdateToDomain;
 import com.back.clientes.api.model.converters.ClientToDTO;
@@ -42,13 +43,14 @@ public class ClientServiceImpl implements ClientService {
     private final ClientDTOUpdateToDomain clientDTOUpdateToDomain;
     private final ClientToDTO clientToDTO;
 
+    private final AccountRequestClient accountRequestClient;
     private final ClientAccountRepository clientAccountRepository;
 
     @Override
     public Page<ClientSummaryDTO> findAll(Specification<Client> spec, UUID accountId, Pageable pageable) {
         Page<Client> clientsPage = null;
 
-        if (accountId != null) {
+        if(accountId != null) {
             clientsPage = clientRepository.findAll(SpecificationTemplate.clientAccountId(accountId).and(spec), pageable);
         } else {
             clientsPage = clientRepository.findAll(spec, pageable);
@@ -58,15 +60,15 @@ public class ClientServiceImpl implements ClientService {
 
     public ClientSummaryDTO findByClient(UUID clientId) {
         var client = searchOrFail(clientId);
-        return clientToDTO.converter(client);
+       return clientToDTO.converter(client);
     }
 
     @Transactional
     @Override
-    public ClientSummaryDTO updateClient(UUID clientId, ClientDTOUpdate clientDTOUpdate) {
+    public ClientSummaryDTO updateClient(UUID clientId , ClientDTOUpdate clientDTOUpdate) {
         Client client = searchOrFail(clientId);
         clientDTOUpdateToDomain.copyToDomainObject(clientDTOUpdate, client);
-        return clientToDTO.converter(clientRepository.save(client));
+        return  clientToDTO.converter(clientRepository.save(client));
 
     }
 
@@ -85,11 +87,17 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void delete(UUID clientId) {
-        List<ClientAccount> clientAccounts = clientAccountRepository.findAllClientAccountIntoClient(clientId);
-        if (!clientAccounts.isEmpty()) {
-            clientAccountRepository.deleteAll(clientAccounts);
-        }
-        clientRepository.delete(searchOrFail(clientId));
+        boolean deleteClientAccountInClient = false;
+        searchOrFail(clientId);
+        var clientAccounts = clientAccountRepository.findByClientClientId(clientId);
+         if(!clientAccounts.isEmpty()) {
+             clientAccountRepository.deleteAll(clientAccounts.get());
+             deleteClientAccountInClient = true;
+         }
+         clientRepository.delete(searchOrFail(clientId));
+         if(deleteClientAccountInClient) {
+             accountRequestClient.deleteClientInAccount(clientId);
+         }
     }
 
     @Transactional

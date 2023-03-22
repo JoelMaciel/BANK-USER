@@ -40,14 +40,21 @@ public class AccountRequestClient {
         log.info("Request URL: {}", url);
         try {
             ParameterizedTypeReference<ResponsePageDTO<AccountDTO>> responseType =
-                                 new ParameterizedTypeReference<ResponsePageDTO<AccountDTO>>() {};
+                    new ParameterizedTypeReference<ResponsePageDTO<AccountDTO>>() {};
             result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
             searchResult = result.getBody().getContent();
         } catch (HttpStatusCodeException e) {
-        log.error("Error request/ accounts {}", e);
+            log.error("Error request/ accounts {}", e);
         }
         log.info("Ending request / accounts clientId {}", clientId);
 
         return result.getBody();
+    }
+
+    public void deleteClientInAccount(UUID clientId) {
+        String url = REQUEST_URI_ACCOUNT + "/accounts/clients/" + clientId;
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+        log.info("Request URL: {}", url);
+        log.debug("Request URL: {}", url);
     }
 }

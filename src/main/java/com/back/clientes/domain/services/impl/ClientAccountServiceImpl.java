@@ -23,12 +23,12 @@ public class ClientAccountServiceImpl implements ClientAccountService {
 
     @Override
     public ClientAccountDTO saveClientInAccount(UUID clientId, ClientAccountDTO clientAccountDTO) {
-       var client = clientService.searchOrFail(clientId);
+        var client = clientService.searchOrFail(clientId);
 
-        if(existsByClientInAccountId(client, clientAccountDTO.getAccountId())) {
+        if (existsByClientInAccountId(client, clientAccountDTO.getAccountId())) {
             throw new SubscriptionInUseException("A customer already exists for this account");
         }
-            var clientAccount = save(client.converterToClientAccount(clientAccountDTO.getAccountId()));
+        var clientAccount = save(client.converterToClientAccount(clientAccountDTO.getAccountId()));
         return ClientAccountDTO.converterToDTO(clientAccount);
     }
 
@@ -40,7 +40,7 @@ public class ClientAccountServiceImpl implements ClientAccountService {
     @Transactional
     @Override
     public void deleteClientAccount(UUID accountId) {
-        if(!existsByAccountId(accountId)) {
+        if (!existsByAccountId(accountId)) {
             throw new AccountNotFound(accountId);
         }
         deleteClientAccountByAccount(accountId);
