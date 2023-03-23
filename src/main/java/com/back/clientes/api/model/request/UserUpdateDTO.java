@@ -1,8 +1,10 @@
 package com.back.clientes.api.model.request;
 
 import com.back.clientes.api.model.response.AddressDTO;
-import com.back.clientes.domain.enums.ClientType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -10,7 +12,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ClientDTOUpdate {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder(toBuilder = true)
+public class UserUpdateDTO {
+
+    @NotBlank
+    private String name;
 
     @NotBlank
     @Email
@@ -20,9 +28,8 @@ public class ClientDTOUpdate {
     private String phoneNumber;
 
     @NotNull
-    private ClientType clientType;
-
-    @NotNull
     @Valid
     private AddressDTO address;
+
+
 }

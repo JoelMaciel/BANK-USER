@@ -1,7 +1,7 @@
 package com.back.clientes.api.exceptionhandler;
 
 import com.back.clientes.domain.exception.BusinessException;
-import com.back.clientes.domain.exception.ClientNotFound;
+import com.back.clientes.domain.exception.UserNotFound;
 import com.back.clientes.domain.exception.EntityInUseException;
 import com.back.clientes.domain.exception.InvalidPasswordException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
@@ -186,9 +186,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
 
-	@ExceptionHandler(ClientNotFound.class)
-	public ResponseEntity<?> handleEntityNotFound(ClientNotFound ex,
-														 WebRequest request) {
+	@ExceptionHandler(UserNotFound.class)
+	public ResponseEntity<?> handleEntityNotFound(UserNotFound ex,
+												  WebRequest request) {
 		
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		ProblemType problemType = ProblemType.RESOURCE_NOT_FUND;

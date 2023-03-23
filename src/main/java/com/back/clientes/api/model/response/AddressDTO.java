@@ -24,7 +24,7 @@ public class AddressDTO {
 
     private String city;
 
-    public static AddressDTO fromDto(Address address) {
+    public static AddressDTO toDTO(Address address) {
         return AddressDTO.builder()
                 .zipCode(address.getZipCode())
                 .street(address.getStreet())
@@ -34,6 +34,4 @@ public class AddressDTO {
                 .city(address.getCity())
                 .build();
     }
-
-
 }

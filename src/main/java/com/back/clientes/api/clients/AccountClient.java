@@ -21,7 +21,7 @@ import java.util.UUID;
 @Log4j2
 @RequiredArgsConstructor
 @Component
-public class AccountRequestClient {
+public class AccountClient {
 
     private final RestTemplate restTemplate;
 
@@ -30,11 +30,11 @@ public class AccountRequestClient {
     @Value("${bank.api.url.account}")
     String REQUEST_URI_ACCOUNT;
 
-    public Page<AccountDTO> getAllAccountsByClient(UUID clientId, Pageable pageable) {
+    public Page<AccountDTO> getAllAccountsByUser(UUID userId, Pageable pageable) {
         List<AccountDTO> searchResult = null;
         ResponseEntity<ResponsePageDTO<AccountDTO>> result = null;
 
-        String url = REQUEST_URI_ACCOUNT + utilsService.createUrl(clientId, pageable);
+        String url = REQUEST_URI_ACCOUNT + utilsService.createUrl(userId, pageable);
 
         log.debug("Request URL: {}", url);
         log.info("Request URL: {}", url);
@@ -46,15 +46,9 @@ public class AccountRequestClient {
         } catch (HttpStatusCodeException e) {
             log.error("Error request/ accounts {}", e);
         }
-        log.info("Ending request / accounts clientId {}", clientId);
+        log.info("Ending request / accounts userId {}", userId);
 
         return result.getBody();
     }
 
-    public void deleteClientInAccount(UUID clientId) {
-        String url = REQUEST_URI_ACCOUNT + "/accounts/clients/" + clientId;
-        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
-        log.info("Request URL: {}", url);
-        log.debug("Request URL: {}", url);
-    }
 }

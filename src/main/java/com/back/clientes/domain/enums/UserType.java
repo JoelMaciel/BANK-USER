@@ -1,6 +1,6 @@
 package com.back.clientes.domain.enums;
 
-public enum ClientType {
+public enum UserType {
 
     MANAGER,
     EMPLOYEE,

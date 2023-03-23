@@ -11,5 +11,5 @@ import java.util.UUID;
 public class EmployeeDTO {
 
     @NonNull
-    private UUID clientId;
+    private UUID userId;
 }

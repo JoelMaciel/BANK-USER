@@ -1,7 +1,9 @@
 package com.back.clientes.api.model.request;
 
 import com.back.clientes.api.model.response.AddressDTO;
-import com.back.clientes.domain.enums.ClientType;
+import com.back.clientes.domain.enums.UserType;
+import com.back.clientes.domain.model.Address;
+import com.back.clientes.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,13 +14,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientDTO {
+public class UserDTO {
 
     @NotBlank
     private String name;
@@ -38,10 +41,21 @@ public class ClientDTO {
     private String phoneNumber;
 
     @NotNull
-    private ClientType clientType;
+    private UserType userType;
 
     @NotNull
     @Valid
     private AddressDTO address;
 
+    public static User toEntity(UserDTO userDTO) {
+        return User.builder()
+                .name(userDTO.getName())
+                .cpf(userDTO.getCpf())
+                .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
+                .phoneNumber(userDTO.getPhoneNumber())
+                .userType(userDTO.getUserType())
+                .address(Address.toEntity(userDTO.getAddress()))
+                .build();
+    }
 }

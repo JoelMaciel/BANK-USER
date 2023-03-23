@@ -7,7 +7,7 @@ spring:
   application:
     name: bank-user-service
   datasource:
-    url: jdbc:mysql://localhost/bank_client?createDatabaseIfNotExist=true&serverTimeZone=UTC
+    url: jdbc:mysql://localhost/bank_user?createDatabaseIfNotExist=true&serverTimeZone=UTC
     username: root
     password:
 
