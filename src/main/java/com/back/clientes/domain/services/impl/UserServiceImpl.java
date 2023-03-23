@@ -1,26 +1,28 @@
 package com.back.clientes.domain.services.impl;
 
-import com.back.clientes.api.model.converters.ClientToDTO;
 import com.back.clientes.api.model.request.EmployeeDTO;
 import com.back.clientes.api.model.request.UserDTO;
 import com.back.clientes.api.model.request.UserUpdateDTO;
 import com.back.clientes.api.model.response.UserSummaryDTO;
 import com.back.clientes.domain.enums.UserType;
-import com.back.clientes.domain.exception.UserNotFound;
 import com.back.clientes.domain.exception.InvalidPasswordException;
+import com.back.clientes.domain.exception.UserNotFound;
 import com.back.clientes.domain.model.Address;
 import com.back.clientes.domain.model.User;
 import com.back.clientes.domain.repository.UserRepository;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,12 +32,15 @@ public class UserServiceImpl implements UserService {
             "Client code %s cannot be removed as it is in use";
 
     private final UserRepository userRepository;
-    private final ClientToDTO clientToDTO;
 
     @Override
-    public Page<UserSummaryDTO> findAll(Specification<User> spec, Pageable pageable) {
-        Page<User> clientsPage = userRepository.findAll(spec, pageable);
-        return clientToDTO.convertToPageDto(clientsPage, pageable);
+    public Page<UserSummaryDTO> findAll(Specification<User> user, Pageable pageable) {
+        Page<User> usersPage = userRepository.findAll(pageable);
+        List<UserSummaryDTO> agencyList = usersPage.getContent().stream()
+                .map(UserSummaryDTO::toDTO)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(agencyList, pageable, usersPage.getTotalElements());
     }
 
     public UserSummaryDTO findByUser(UUID userId) {
