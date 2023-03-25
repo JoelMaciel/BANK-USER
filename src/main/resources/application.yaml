@@ -10,16 +10,21 @@ spring:
     url: jdbc:mysql://localhost/bank_user?createDatabaseIfNotExist=true&serverTimeZone=UTC
     username: root
     password:
+  flyway:
+    locations: classpath:db/migration
+
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       properties: org.hibernate.dialect.MySQL8Dialect
       jdbc:
         lob.non-contextual-creation: true
     properties:
       hibernate:
         show_sql: true
+  rabbitmq:
+    addresses: amqps://crdzywry:s60VjJGfFG8XvLV47DGyCp5Ig8l2oyCi@woodpecker.rmq.cloudamqp.com/crdzywry
 
 logging:
   level:
@@ -32,6 +37,9 @@ bank:
   api:
     url:
       account: 'http://bank-account-service/bank-account'
+  broker:
+    exchange:
+      userEvent: bank.userevent
 
 eureka:
   client:

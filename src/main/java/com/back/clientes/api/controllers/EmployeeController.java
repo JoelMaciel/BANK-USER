@@ -1,7 +1,7 @@
 package com.back.clientes.api.controllers;
 
 import com.back.clientes.api.model.request.EmployeeDTO;
-import com.back.clientes.api.model.response.UserSummaryDTO;
+import com.back.clientes.api.model.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +19,7 @@ public class EmployeeController {
     private final UserService userService;
 
     @PostMapping("/subscription")
-    public UserSummaryDTO saveSubscriptionEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
+    public UserResponseDTO saveSubscriptionEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
         return userService.saveEmployee(employeeDTO);
     }
 }

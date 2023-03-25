@@ -1,7 +1,6 @@
 package com.back.clientes.api.model.request;
 
 import com.back.clientes.api.model.response.AddressDTO;
-import com.back.clientes.domain.enums.UserType;
 import com.back.clientes.domain.model.Address;
 import com.back.clientes.domain.model.User;
 import lombok.AllArgsConstructor;
@@ -40,9 +39,6 @@ public class UserDTO {
     private String phoneNumber;
 
     @NotNull
-    private UserType userType;
-
-    @NotNull
     @Valid
     private AddressDTO address;
 
@@ -53,7 +49,6 @@ public class UserDTO {
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .userType(userDTO.getUserType())
                 .address(Address.toEntity(userDTO.getAddress()))
                 .build();
     }

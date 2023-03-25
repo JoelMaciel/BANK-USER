@@ -1,7 +1,7 @@
 package com.back.clientes.domain.model;
 
+import com.back.clientes.domain.enums.UserStatus;
 import com.back.clientes.domain.enums.UserType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -28,24 +30,30 @@ public class User implements Serializable {
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID userId;
 
+
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
+    @CPF
     private String cpf;
 
-    @Column(nullable = false)
+    @Email
     private String email;
 
     @Column(nullable = false)
-    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserType userType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
