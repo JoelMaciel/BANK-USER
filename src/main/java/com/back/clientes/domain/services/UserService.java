@@ -1,6 +1,7 @@
 package com.back.clientes.domain.services;
 
 import com.back.clientes.api.model.request.EmployeeDTO;
+import com.back.clientes.api.model.request.ManagerDTO;
 import com.back.clientes.api.model.request.UserDTO;
 import com.back.clientes.api.model.request.UserUpdateDTO;
 import com.back.clientes.api.model.response.UserResponseDTO;
@@ -15,13 +16,19 @@ public interface UserService {
 
     UserResponseDTO saveUser(UserDTO userDTO);
 
+    void deleteUser(UUID userId);
+
+    UserResponseDTO updateUser(UUID userId,UserUpdateDTO userUpdateDTO);
+
+   // UserResponseDTO updatePasswor()
+
     void delete(UUID userId);
 
     UserResponseDTO findByUser(UUID userId);
 
     UserResponseDTO save(UserDTO userDTO);
 
-    UserResponseDTO updateUser(UUID userId, UserUpdateDTO userUpdateDTO);
+    UserResponseDTO update(UUID userId, UserUpdateDTO userUpdateDTO);
 
 
     Page<UserResponseDTO> findAll(Specification<User> spec, Pageable pageable);
@@ -32,4 +39,5 @@ public interface UserService {
     void updatePassword(UUID userId, String passwordCurrent, String newPassword);
 
     UserResponseDTO saveEmployee(EmployeeDTO employeeDTO);
+    UserResponseDTO saveManager(ManagerDTO managerDTO);
 }

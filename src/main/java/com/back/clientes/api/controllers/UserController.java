@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public UserResponseDTO updateClient(@PathVariable UUID userId, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+    public UserResponseDTO updateUser(@PathVariable UUID userId, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
         return userService.updateUser(userId, userUpdateDTO);
     }
 
@@ -50,6 +50,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable UUID userId) {
-        userService.delete(userId);
+        userService.deleteUser(userId);
     }
 }

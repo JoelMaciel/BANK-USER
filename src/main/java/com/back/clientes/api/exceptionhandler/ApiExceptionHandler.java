@@ -1,9 +1,6 @@
 package com.back.clientes.api.exceptionhandler;
 
-import com.back.clientes.domain.exception.BusinessException;
-import com.back.clientes.domain.exception.DuplicateDataException;
-import com.back.clientes.domain.exception.InvalidPasswordException;
-import com.back.clientes.domain.exception.UserNotFound;
+import com.back.clientes.domain.exception.*;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -207,6 +204,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.CONFLICT;
         ProblemType problemType = ProblemType.DUPLICATE_DATA;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<?> handleInvalidData(InvalidDataException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(status, problemType, detail)
