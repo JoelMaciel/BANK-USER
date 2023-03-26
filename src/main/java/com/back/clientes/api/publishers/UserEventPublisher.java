@@ -1,7 +1,6 @@
 package com.back.clientes.api.publishers;
 
 import com.back.clientes.api.model.event.UserEventDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
 import com.back.clientes.domain.enums.ActionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,6 +21,4 @@ public class UserEventPublisher {
         rabbitTemplate.convertAndSend(exchangeUserEvent, "", userEventDTO);
 
     }
-
-
 }
