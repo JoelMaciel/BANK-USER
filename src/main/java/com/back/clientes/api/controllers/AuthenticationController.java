@@ -1,8 +1,8 @@
 package com.back.clientes.api.controllers;
 
-import com.back.clientes.api.model.request.ClientDTO;
-import com.back.clientes.api.model.response.ClientSummaryDTO;
-import com.back.clientes.domain.services.ClientService;
+import com.back.clientes.api.model.request.UserDTO;
+import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +14,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthenticationController {
-    private final ClientService clientService;
+    private final UserService userService;
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public ClientSummaryDTO registerClient(@RequestBody @Valid ClientDTO clientDTO) {
-        return clientService.save(clientDTO);
+    public UserResponseDTO registerUser(@RequestBody @Valid UserDTO userDTO) {
+        return userService.saveUser(userDTO);
     }
 }

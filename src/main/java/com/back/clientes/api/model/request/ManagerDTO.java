@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class EmployeeDTO {
+public class ManagerDTO {
 
     @NonNull
     private UUID userId;
