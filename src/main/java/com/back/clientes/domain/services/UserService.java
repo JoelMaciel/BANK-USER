@@ -20,8 +20,6 @@ public interface UserService {
 
     UserResponseDTO updateUser(UUID userId,UserUpdateDTO userUpdateDTO);
 
-   // UserResponseDTO updatePasswor()
-
     void delete(UUID userId);
 
     UserResponseDTO findByUser(UUID userId);
