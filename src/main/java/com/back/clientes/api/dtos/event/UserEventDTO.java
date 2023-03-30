@@ -1,6 +1,6 @@
-package com.back.clientes.api.model.event;
+package com.back.clientes.api.dtos.event;
 
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

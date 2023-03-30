@@ -1,11 +1,11 @@
 package com.back.clientes.domain.services.impl;
 
-import com.back.clientes.api.model.event.UserEventDTO;
-import com.back.clientes.api.model.request.EmployeeDTO;
-import com.back.clientes.api.model.request.ManagerDTO;
-import com.back.clientes.api.model.request.UserDTO;
-import com.back.clientes.api.model.request.UserUpdateDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.event.UserEventDTO;
+import com.back.clientes.api.dtos.request.EmployeeDTO;
+import com.back.clientes.api.dtos.request.ManagerDTO;
+import com.back.clientes.api.dtos.request.UserDTO;
+import com.back.clientes.api.dtos.request.UserUpdateDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.api.publishers.UserEventPublisher;
 import com.back.clientes.domain.enums.ActionType;
 import com.back.clientes.domain.enums.UserStatus;

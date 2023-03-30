@@ -1,7 +1,7 @@
 package com.back.clientes.api.controllers;
 
-import com.back.clientes.api.model.request.UserDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.request.UserDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

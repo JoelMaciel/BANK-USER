@@ -1,6 +1,6 @@
-package com.back.clientes.api.model.request;
+package com.back.clientes.api.dtos.request;
 
-import com.back.clientes.api.model.response.AddressDTO;
+import com.back.clientes.api.dtos.response.AddressDTO;
 import com.back.clientes.domain.model.Address;
 import com.back.clientes.domain.model.User;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.back.clientes.api.model.response;
+package com.back.clientes.api.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

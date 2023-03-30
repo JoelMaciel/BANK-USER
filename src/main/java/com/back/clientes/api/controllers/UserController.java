@@ -1,8 +1,8 @@
 package com.back.clientes.api.controllers;
 
-import com.back.clientes.api.model.request.PasswordDTO;
-import com.back.clientes.api.model.request.UserUpdateDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.request.PasswordDTO;
+import com.back.clientes.api.dtos.request.UserUpdateDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import com.back.clientes.infrastructure.specification.SpecificationTemplate;
 import lombok.RequiredArgsConstructor;

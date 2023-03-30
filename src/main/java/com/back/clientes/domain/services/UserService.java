@@ -1,10 +1,10 @@
 package com.back.clientes.domain.services;
 
-import com.back.clientes.api.model.request.EmployeeDTO;
-import com.back.clientes.api.model.request.ManagerDTO;
-import com.back.clientes.api.model.request.UserDTO;
-import com.back.clientes.api.model.request.UserUpdateDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.request.EmployeeDTO;
+import com.back.clientes.api.dtos.request.ManagerDTO;
+import com.back.clientes.api.dtos.request.UserDTO;
+import com.back.clientes.api.dtos.request.UserUpdateDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
