@@ -213,7 +213,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-
     @ExceptionHandler(InvalidDataException.class)
     public ResponseEntity<?> handleInvalidData(InvalidDataException ex, WebRequest request) {
 

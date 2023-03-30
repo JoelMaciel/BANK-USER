@@ -3,6 +3,7 @@ package com.back.clientes.api.clients;
 import com.back.clientes.api.dtos.response.AccountDTO;
 import com.back.clientes.api.dtos.response.ResponsePageDTO;
 import com.back.clientes.domain.services.UtilsService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ public class AccountClient {
     @Value("${bank.api.url.account}")
     String REQUEST_URI_ACCOUNT;
 
+    @CircuitBreaker(name = "circuitbreakerInstance")
     public Page<AccountDTO> getAllAccountsByUser(UUID userId, Pageable pageable) {
         List<AccountDTO> searchResult = null;
         ResponseEntity<ResponsePageDTO<AccountDTO>> result = null;
