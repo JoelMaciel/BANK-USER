@@ -1,7 +1,7 @@
 package com.back.clientes.api.clients;
 
-import com.back.clientes.api.model.response.AccountDTO;
-import com.back.clientes.api.model.response.ResponsePageDTO;
+import com.back.clientes.api.dtos.response.AccountDTO;
+import com.back.clientes.api.dtos.response.ResponsePageDTO;
 import com.back.clientes.domain.services.UtilsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

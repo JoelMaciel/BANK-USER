@@ -1,4 +1,4 @@
-package com.back.clientes.api.model.response;
+package com.back.clientes.api.dtos.response;
 
 import com.back.clientes.domain.enums.UserStatus;
 import com.back.clientes.domain.enums.UserType;

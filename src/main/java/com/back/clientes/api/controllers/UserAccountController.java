@@ -1,7 +1,7 @@
 package com.back.clientes.api.controllers;
 
 import com.back.clientes.api.clients.AccountClient;
-import com.back.clientes.api.model.response.AccountDTO;
+import com.back.clientes.api.dtos.response.AccountDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

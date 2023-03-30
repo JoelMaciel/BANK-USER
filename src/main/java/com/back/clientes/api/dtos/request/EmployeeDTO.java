@@ -1,4 +1,4 @@
-package com.back.clientes.api.model.request;
+package com.back.clientes.api.dtos.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

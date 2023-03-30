@@ -1,8 +1,7 @@
 package com.back.clientes.api.controllers;
 
-import com.back.clientes.api.model.request.EmployeeDTO;
-import com.back.clientes.api.model.request.ManagerDTO;
-import com.back.clientes.api.model.response.UserResponseDTO;
+import com.back.clientes.api.dtos.request.ManagerDTO;
+import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
