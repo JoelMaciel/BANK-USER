@@ -4,7 +4,7 @@ CREATE TABLE `user` (
   `cpf` varchar(11) UNIQUE NOT NULL,
   `email` varchar(50) UNIQUE NOT NULL,
   `phone_number` varchar(24) UNIQUE NOT NULL,
-  `password` varchar(25) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `creation_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `user_type` varchar(20) DEFAULT NULL,
@@ -16,6 +16,6 @@ CREATE TABLE `user` (
   `zip_code` varchar(12) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   CHECK (LENGTH(name) >= 15 AND LENGTH(name) <= 50),
-  CHECK (LENGTH(password) >= 8 AND LENGTH(password) <= 24),
+  CHECK (LENGTH(password) >= 8 AND LENGTH(password) <= 255),
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

@@ -2,6 +2,7 @@ package com.back.clientes.domain.model;
 
 import com.back.clientes.domain.enums.UserStatus;
 import com.back.clientes.domain.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -65,6 +68,13 @@ public class User implements Serializable {
 
     @Embedded
     private Address address;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Roles> roles = new HashSet<>();
 
     public boolean passwordMatches(String passwordCurrent) {
         return getPassword().equals(passwordCurrent);
