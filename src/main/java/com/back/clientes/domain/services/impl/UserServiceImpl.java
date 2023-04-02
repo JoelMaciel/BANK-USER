@@ -7,6 +7,7 @@ import com.back.clientes.api.dtos.request.UserDTO;
 import com.back.clientes.api.dtos.request.UserUpdateDTO;
 import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.api.publishers.UserEventPublisher;
+import com.back.clientes.core.security.AuthenticationCurrentService;
 import com.back.clientes.core.security.JwtProvider;
 import com.back.clientes.core.security.dtos.JwtDTO;
 import com.back.clientes.core.security.dtos.LoginDTO;
@@ -22,13 +23,13 @@ import com.back.clientes.domain.repository.UserRepository;
 import com.back.clientes.domain.services.RoleService;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,37 +55,38 @@ public class UserServiceImpl implements UserService {
             "The name must have a minimum of 15 and a maximum of 50 characters";
     private static final String MSG_INVALID_CPF =
             "The CPF you entered is invalid or does not exist.";
-
+    private static final String MSG_PERMISSION_DENIED = "Access is denied for this resource.";
 
     private final UserRepository userRepository;
-
-
     private final UserEventPublisher userEventPublisher;
-
     private final RoleService roleService;
-
-
     private final PasswordEncoder passwordEncoder;
-
-
     private final JwtProvider jwtProvider;
-
     private final AuthenticationManager authenticationManager;
+    private final AuthenticationCurrentService authenticationCurrentService;
 
     @Override
     public Page<UserResponseDTO> findAll(Specification<User> user, Pageable pageable) {
-        Page<User> usersPage = userRepository.findAll(pageable);
-        List<UserResponseDTO> agencyList = usersPage.getContent().stream()
-                .map(UserResponseDTO::toDTO)
-                .collect(Collectors.toList());
+        try {
+            Page<User> usersPage = userRepository.findAll(pageable);
+            List<UserResponseDTO> agencyList = usersPage.getContent().stream()
+                    .map(UserResponseDTO::toDTO)
+                    .collect(Collectors.toList());
 
-        return new PageImpl<>(agencyList, pageable, usersPage.getTotalElements());
+            return new PageImpl<>(agencyList, pageable, usersPage.getTotalElements());
+        } catch (AccessDeniedException e) {
+            throw new PermissionDeniedException("Access is denied for this resource.");
+        }
     }
 
     public UserResponseDTO findByUser(UUID userId) {
-        return UserResponseDTO.toDTO(searchOrFail(userId));
+        UUID currentUserId = authenticationCurrentService.getCurrentUser().getUserId();
+        if (!currentUserId.equals(userId)) {
+            throw new PermissionDeniedException(MSG_PERMISSION_DENIED);
+        }
+        User user = searchOrFail(userId);
+        return UserResponseDTO.toDTO(user);
     }
-
 
     @Transactional
     @Override

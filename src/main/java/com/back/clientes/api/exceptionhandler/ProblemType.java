@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum ProblemType {
 
 	INVALID_DATA("/invalid-data", "Invalid Data"),
+	ACCESS_DENIED("/access-denied", "Access Denied"),
 	SYSTEM_ERROR("/system-error", "System Error"),
 	INVALID_PARAMETER("/invalid-parameter", "Invalid Parameter"),
 	DUPLICATE_DATA("/duplicate-data", "Duplicate Data"),

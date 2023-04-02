@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,12 +25,14 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("hasAnyRole('EMPLOYEE','MANAGER')")
     @GetMapping
     public Page<UserResponseDTO> getAllUsers(SpecificationTemplate.UserSpec spec,
                                              @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
         return userService.findAll(spec, pageable);
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER','CUSTOMER')")
     @GetMapping("/{userId}")
     public UserResponseDTO getOneUser(@PathVariable UUID userId) {
         return userService.findByUser(userId);
