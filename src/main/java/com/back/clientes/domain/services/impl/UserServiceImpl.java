@@ -7,29 +7,39 @@ import com.back.clientes.api.dtos.request.UserDTO;
 import com.back.clientes.api.dtos.request.UserUpdateDTO;
 import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.api.publishers.UserEventPublisher;
+import com.back.clientes.core.security.JwtProvider;
+import com.back.clientes.core.security.dtos.JwtDTO;
+import com.back.clientes.core.security.dtos.LoginDTO;
 import com.back.clientes.domain.enums.ActionType;
+import com.back.clientes.domain.enums.RoleType;
 import com.back.clientes.domain.enums.UserStatus;
 import com.back.clientes.domain.enums.UserType;
-import com.back.clientes.domain.exception.DuplicateDataException;
-import com.back.clientes.domain.exception.InvalidDataException;
-import com.back.clientes.domain.exception.InvalidPasswordException;
-import com.back.clientes.domain.exception.UserNotFound;
+import com.back.clientes.domain.exception.*;
 import com.back.clientes.domain.model.Address;
+import com.back.clientes.domain.model.Roles;
 import com.back.clientes.domain.model.User;
 import com.back.clientes.domain.repository.UserRepository;
+import com.back.clientes.domain.services.RoleService;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,8 +48,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String MSG_CLIENT_IN_USE =
-            "Client code %s cannot be removed as it is in use";
     private static final String DUPLICATE_DATA =
             "There is already a user registered with this CPF or Email or Phone Number.";
     private static final String MSG_INVALID_DATA =
@@ -47,9 +55,21 @@ public class UserServiceImpl implements UserService {
     private static final String MSG_INVALID_CPF =
             "The CPF you entered is invalid or does not exist.";
 
+
     private final UserRepository userRepository;
 
+
     private final UserEventPublisher userEventPublisher;
+
+    private final RoleService roleService;
+
+
+    private final PasswordEncoder passwordEncoder;
+
+
+    private final JwtProvider jwtProvider;
+
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public Page<UserResponseDTO> findAll(Specification<User> user, Pageable pageable) {
@@ -69,31 +89,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserResponseDTO saveUser(UserDTO userDTO) {
-        try {
-            var userResponseDTO = save(userDTO);
-            userEventPublisher.publisherUserEvent(UserEventDTO.toUserEventDTO(userResponseDTO), ActionType.CREATE);
-            return userResponseDTO;
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateDataException(DUPLICATE_DATA);
-        }
-
+        var userResponseDTO = save(userDTO);
+        userEventPublisher.publisherUserEvent(UserEventDTO.toUserEventDTO(userResponseDTO), ActionType.CREATE);
+        return userResponseDTO;
     }
 
-    @Transactional
-    @Override
     public UserResponseDTO save(UserDTO userDTO) {
         try {
-            var newUser = UserDTO.toEntity(userDTO).toBuilder()
-                    .userType(UserType.CUSTOMER)
-                    .status(UserStatus.ACTIVE).build();
-            userRepository.save(newUser);
-            userRepository.flush();
-            return UserResponseDTO.toDTO(newUser);
-        } catch (JpaSystemException e) {
-            throw new InvalidDataException(MSG_INVALID_DATA);
+            User newUser = createUserFromDTO(userDTO);
+            return UserResponseDTO.toDTO(userRepository.saveAndFlush(newUser));
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateDataException(DUPLICATE_DATA);
         } catch (ConstraintViolationException e) {
             throw new InvalidDataException(MSG_INVALID_CPF);
+        } catch (JpaSystemException e) {
+            throw new InvalidDataException(MSG_INVALID_DATA);
         }
+    }
+
+    private User createUserFromDTO(UserDTO userDTO) {
+        Roles role = roleService.findByRoleName(RoleType.ROLE_CUSTOMER);
+        User user = UserDTO.toEntity(userDTO).toBuilder()
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .userType(UserType.CUSTOMER)
+                .status(UserStatus.ACTIVE)
+                .roles(Collections.singleton(role))
+                .build();
+        return user;
     }
 
     @Transactional
@@ -136,14 +158,13 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO update(UUID userId, UserUpdateDTO userUpdateDTO) {
         try {
             User user = searchOrFail(userId).toBuilder()
-                    .name(userUpdateDTO.getName())
+                    .username(userUpdateDTO.getUsername())
+                    .fullName(userUpdateDTO.getFullName())
                     .email(userUpdateDTO.getEmail())
                     .phoneNumber(userUpdateDTO.getPhoneNumber())
                     .address(Address.toEntity(userUpdateDTO.getAddress()))
                     .build();
-            userRepository.save(user);
-            userRepository.flush();
-            return UserResponseDTO.toDTO(user);
+            return UserResponseDTO.toDTO(userRepository.saveAndFlush(user));
         } catch (JpaSystemException e) {
             throw new InvalidDataException(MSG_INVALID_DATA);
         }
@@ -176,6 +197,18 @@ public class UserServiceImpl implements UserService {
         user.setPassword(newPassword);
     }
 
+    @Override
+    public JwtDTO authenticationUserLogin(LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return new JwtDTO(jwtProvider.generateJwt(authentication));
+        } catch (RuntimeException e) {
+            throw new InvalidLoginDataException("Incorrect email or password.");
+        }
+
+    }
 
     public User searchOrFail(UUID userId) {
         return userRepository.findById(userId)

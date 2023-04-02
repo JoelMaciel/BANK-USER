@@ -19,7 +19,8 @@ public class UserResponseDTO {
 
    @JsonIgnore
     private UUID userId;
-    private String name;
+    private String username;
+    private String fullName;
     private String cpf;
     private String email;
     private String phoneNumber;
@@ -32,7 +33,8 @@ public class UserResponseDTO {
     public static UserResponseDTO toDTO(User user) {
         return UserResponseDTO.builder()
                 .userId(user.getUserId())
-                .name(user.getName())
+                .username(user.getUsername())
+                .fullName(user.getFullName())
                 .cpf(user.getCpf())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())

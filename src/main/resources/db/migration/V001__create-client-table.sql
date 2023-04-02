@@ -1,10 +1,11 @@
 CREATE TABLE `user` (
-  `user_id` varchar(255) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `cpf` varchar(11) UNIQUE NOT NULL,
-  `email` varchar(50) UNIQUE NOT NULL,
-  `phone_number` varchar(24) UNIQUE NOT NULL,
-  `password` varchar(25) NOT NULL,
+  `user_id` varchar(36) NOT NULL,
+  `username` varchar(35) UNIQUE NOT NULL,
+  `full_name` varchar(35) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` varchar(24) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `creation_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `user_type` varchar(20) DEFAULT NULL,
@@ -15,7 +16,10 @@ CREATE TABLE `user` (
   `neighborhood` varchar(50) DEFAULT NULL,
   `zip_code` varchar(12) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
-  CHECK (LENGTH(name) >= 15 AND LENGTH(name) <= 50),
-  CHECK (LENGTH(password) >= 8 AND LENGTH(password) <= 24),
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `cpf` (`cpf`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `phone_number` (`phone_number`),
+  CONSTRAINT `user_chk_1` CHECK (((length(`username`) >= 8) and (length(`username`) <= 35))),
+  CONSTRAINT `user_chk_2` CHECK (((length(`password`) >= 8) and (length(`password`) <= 255)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

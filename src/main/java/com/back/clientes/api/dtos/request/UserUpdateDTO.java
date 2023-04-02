@@ -18,7 +18,10 @@ import javax.validation.constraints.NotNull;
 public class UserUpdateDTO {
 
     @NotBlank
-    private String name;
+    private String username;
+
+    @NotBlank
+    private String fullName;
 
     @NotBlank
     @Email

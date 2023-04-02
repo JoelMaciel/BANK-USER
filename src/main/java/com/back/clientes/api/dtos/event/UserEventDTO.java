@@ -17,7 +17,8 @@ public class UserEventDTO {
 
     @Id
     private UUID userId;
-    private String name;
+    private String username;
+    private String fullName;
     private String cpf;
     private String email;
     private String phoneNumber;
@@ -28,7 +29,8 @@ public class UserEventDTO {
     public static UserEventDTO toUserEventDTO(UserResponseDTO userResponseDTO) {
         return UserEventDTO.builder()
                 .userId(userResponseDTO.getUserId())
-                .name(userResponseDTO.getName())
+                .username(userResponseDTO.getUsername())
+                .fullName(userResponseDTO.getFullName())
                 .cpf(userResponseDTO.getCpf())
                 .email(userResponseDTO.getEmail())
                 .phoneNumber(userResponseDTO.getPhoneNumber())
