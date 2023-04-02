@@ -35,7 +35,10 @@ public class User implements Serializable {
 
 
     @Column(nullable = false)
-    private String name;
+    private String username;
+
+    @Column(nullable = false)
+    private String fullName;
 
     @Column(nullable = false)
     @CPF

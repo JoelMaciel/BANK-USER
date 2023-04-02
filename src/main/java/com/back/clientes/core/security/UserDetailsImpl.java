@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private UUID userId;
-    private String name;
+    private String username;
     @JsonIgnore
     private String password;
     private String email;
@@ -32,7 +32,7 @@ public class UserDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
         return UserDetailsImpl.builder()
                 .userId(user.getUserId())
-                .name(user.getName())
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .authorities(authorities)
@@ -51,7 +51,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.username;
     }
 
     @Override

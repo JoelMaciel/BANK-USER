@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, UUID> , JpaSpecifica
 
 
     @EntityGraph(attributePaths = "roles", type = EntityGraph.EntityGraphType.FETCH)
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 }

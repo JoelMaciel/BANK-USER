@@ -22,6 +22,7 @@ import com.back.clientes.domain.repository.UserRepository;
 import com.back.clientes.domain.services.RoleService;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -54,13 +55,17 @@ public class UserServiceImpl implements UserService {
     private static final String MSG_INVALID_CPF =
             "The CPF you entered is invalid or does not exist.";
 
+
     private final UserRepository userRepository;
+
 
     private final UserEventPublisher userEventPublisher;
 
     private final RoleService roleService;
 
+
     private final PasswordEncoder passwordEncoder;
+
 
     private final JwtProvider jwtProvider;
 
@@ -153,7 +158,8 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO update(UUID userId, UserUpdateDTO userUpdateDTO) {
         try {
             User user = searchOrFail(userId).toBuilder()
-                    .name(userUpdateDTO.getName())
+                    .username(userUpdateDTO.getUsername())
+                    .fullName(userUpdateDTO.getFullName())
                     .email(userUpdateDTO.getEmail())
                     .phoneNumber(userUpdateDTO.getPhoneNumber())
                     .address(Address.toEntity(userUpdateDTO.getAddress()))
@@ -195,15 +201,14 @@ public class UserServiceImpl implements UserService {
     public JwtDTO authenticationUserLogin(LoginDTO loginDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return new JwtDTO(jwtProvider.generateJwt(authentication));
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new InvalidLoginDataException("Incorrect email or password.");
         }
 
     }
-
 
     public User searchOrFail(UUID userId) {
         return userRepository.findById(userId)

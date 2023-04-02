@@ -22,7 +22,10 @@ import javax.validation.constraints.Size;
 public class UserDTO {
 
     @NotBlank
-    private String name;
+    private String username;
+
+    @NotBlank
+    private String fullName;
 
     @NotBlank
     private String cpf;
@@ -44,7 +47,8 @@ public class UserDTO {
 
     public static User toEntity(UserDTO userDTO) {
         return User.builder()
-                .name(userDTO.getName())
+                .username(userDTO.username)
+                .fullName(userDTO.getFullName())
                 .cpf(userDTO.getCpf())
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
