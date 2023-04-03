@@ -7,10 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -21,10 +19,12 @@ public class UserAccountController {
 
     private final AccountClient accountClient;
 
+    @PreAuthorize("hasAnyRole('EMPLOYEE')")
     @GetMapping("/users/{userId}/accounts")
     public Page<AccountDTO> getAllAccountByUser(@PageableDefault(page = 0, size = 10, sort = "accountId",
-            direction = Sort.Direction.ASC) Pageable pageable, @PathVariable(value = "userId") UUID userId){
-    return accountClient.getAllAccountsByUser(userId, pageable);
+            direction = Sort.Direction.ASC) Pageable pageable, @PathVariable(value = "userId") UUID userId,
+                                                @RequestHeader("Authorization") String token){
+    return accountClient.getAllAccountsByUser(userId, pageable, token);
     }
 
 }

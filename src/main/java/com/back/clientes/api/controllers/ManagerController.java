@@ -5,6 +5,7 @@ import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ public class ManagerController {
 
     private final UserService userService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/subscription")
     public UserResponseDTO saveSubscriptionManager(@RequestBody @Valid ManagerDTO managerDTO) {
         return userService.saveManager(managerDTO);

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -32,22 +34,24 @@ public class AccountClient {
     String REQUEST_URI_ACCOUNT;
 
     @CircuitBreaker(name = "circuitbreakerInstance")
-    public Page<AccountDTO> getAllAccountsByUser(UUID userId, Pageable pageable) {
+    public Page<AccountDTO> getAllAccountsByUser(UUID userId, Pageable pageable, String token) {
         List<AccountDTO> searchResult = null;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<String> requestEntity = new HttpEntity<String>("parameters", headers);
+
         ResponseEntity<ResponsePageDTO<AccountDTO>> result = null;
 
         String url = REQUEST_URI_ACCOUNT + utilsService.createUrl(userId, pageable);
 
         log.debug("Request URL: {}", url);
         log.info("Request URL: {}", url);
-        try {
-            ParameterizedTypeReference<ResponsePageDTO<AccountDTO>> responseType =
-                    new ParameterizedTypeReference<ResponsePageDTO<AccountDTO>>() {};
-            result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
-            searchResult = result.getBody().getContent();
-        } catch (HttpStatusCodeException e) {
-            log.error("Error request/ accounts {}", e);
-        }
+        ParameterizedTypeReference<ResponsePageDTO<AccountDTO>> responseType =
+                new ParameterizedTypeReference<ResponsePageDTO<AccountDTO>>() {};
+        result = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
+        searchResult = result.getBody().getContent();
+
         log.info("Ending request / accounts userId {}", userId);
 
         return result.getBody();

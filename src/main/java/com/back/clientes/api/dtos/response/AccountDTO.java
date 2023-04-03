@@ -1,6 +1,7 @@
 package com.back.clientes.api.dtos.response;
 
 import com.back.clientes.domain.enums.TypeAccount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class AccountDTO {
 
     private BigDecimal balance;
 
+    @JsonIgnore
     private UUID agencyId;
 
 }
