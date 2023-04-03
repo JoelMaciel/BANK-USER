@@ -5,6 +5,7 @@ import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 public class EmployeeController {
 
     private final UserService userService;
-
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @PostMapping("/subscription")
     public UserResponseDTO saveSubscriptionEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
         return userService.saveEmployee(employeeDTO);

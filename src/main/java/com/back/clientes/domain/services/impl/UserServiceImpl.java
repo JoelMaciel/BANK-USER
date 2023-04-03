@@ -7,7 +7,6 @@ import com.back.clientes.api.dtos.request.UserDTO;
 import com.back.clientes.api.dtos.request.UserUpdateDTO;
 import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.api.publishers.UserEventPublisher;
-import com.back.clientes.core.security.AuthenticationCurrentService;
 import com.back.clientes.core.security.JwtProvider;
 import com.back.clientes.core.security.dtos.JwtDTO;
 import com.back.clientes.core.security.dtos.LoginDTO;
@@ -63,7 +62,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationCurrentService authenticationCurrentService;
 
     @Override
     public Page<UserResponseDTO> findAll(Specification<User> user, Pageable pageable) {
@@ -80,10 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDTO findByUser(UUID userId) {
-        UUID currentUserId = authenticationCurrentService.getCurrentUser().getUserId();
-        if (!currentUserId.equals(userId)) {
-            throw new PermissionDeniedException(MSG_PERMISSION_DENIED);
-        }
         User user = searchOrFail(userId);
         return UserResponseDTO.toDTO(user);
     }
