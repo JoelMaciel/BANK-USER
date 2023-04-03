@@ -7,6 +7,7 @@ import com.back.clientes.core.security.dtos.LoginDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 public class AuthenticationController {
     private final UserService userService;
 
+    @PreAuthorize("hasAnyRole('EMPLOYEE')")
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO registerUser(@RequestBody @Valid UserDTO userDTO) {

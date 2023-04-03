@@ -41,6 +41,7 @@ import javax.validation.ConstraintViolationException;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -117,9 +118,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserResponseDTO saveEmployee(EmployeeDTO employeeDTO) {
+        Roles role = roleService.findByRoleName(RoleType.ROLE_EMPLOYEE);
         var user = searchOrFail(employeeDTO.getUserId())
                 .toBuilder()
                 .userType(UserType.EMPLOYEE)
+                .roles(Collections.singleton(role.toBuilder().roleName(role.getRoleName()).build()))
                 .updateDate(OffsetDateTime.now())
                 .build();
         var employee = UserResponseDTO.toDTO(userRepository.save(user));
@@ -130,9 +133,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserResponseDTO saveManager(ManagerDTO managerDTO) {
+        Roles role = roleService.findByRoleName(RoleType.ROLE_MANAGER);
         var user = searchOrFail(managerDTO.getUserId())
                 .toBuilder()
                 .userType(UserType.MANAGER)
+                .roles(Collections.singleton(role.toBuilder().roleName(role.getRoleName()).build()))
                 .updateDate(OffsetDateTime.now())
                 .build();
         var manager = UserResponseDTO.toDTO(userRepository.save(user));
