@@ -1,6 +1,7 @@
 package com.back.clientes.api.controllers;
 
 import com.back.clientes.api.dtos.request.EmployeeDTO;
+import com.back.clientes.api.dtos.request.ManagerDTO;
 import com.back.clientes.api.dtos.response.UserResponseDTO;
 import com.back.clientes.domain.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,20 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/employees")
-public class EmployeeController {
+@RequestMapping("/position-promotions")
 
+public class PositionPromotionsController {
     private final UserService userService;
+
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @PostMapping("/subscription")
+    @PostMapping("/employees")
     public UserResponseDTO saveSubscriptionEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
         return userService.saveEmployee(employeeDTO);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/managers")
+    public UserResponseDTO saveSubscriptionManager(@RequestBody @Valid ManagerDTO managerDTO) {
+        return userService.saveManager(managerDTO);
     }
 }

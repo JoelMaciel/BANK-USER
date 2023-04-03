@@ -2,10 +2,7 @@ package com.back.clientes.domain.model;
 
 import com.back.clientes.domain.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -14,6 +11,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
