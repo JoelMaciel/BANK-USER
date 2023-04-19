@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: bank-user-service
+  config:
+    import: 'configserver:'
+  cloud:
+    config:
+      discovery:
+        serviceId: bank-config-server
+      username: configserver
+      password: ${CONFIG_PASS}
+
